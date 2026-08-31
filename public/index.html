@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ระบบบันทึกกิจกรรม</title>
+  <style>
+    body { font-family: Tahoma, sans-serif; max-width: 500px; margin: 40px auto; }
+    input, button { padding: 8px; margin: 4px 0; width: 100%; box-sizing: border-box; }
+    li { margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <h1>📋 ระบบบันทึกกิจกรรม</h1>
+  <input id="name" placeholder="ชื่อผู้บันทึก">
+  <input id="activity" placeholder="กิจกรรมที่ทำ">
+  <button onclick="addActivity()">บันทึก</button>
+  <h2>รายการกิจกรรม</h2>
+  <ul id="list"></ul>
+
+  <script>
+    async function loadActivities() {
+      const res = await fetch('/activities');
+      const data = await res.json();
+      const list = document.getElementById('list');
+      list.innerHTML = '';
+      data.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name}: ${item.activity} (${new Date(item.date).toLocaleString()})`;
+        list.appendChild(li);
+      });
+    }
+
+    async function addActivity() {
+      const name = document.getElementById('name').value;
+      const activity = document.getElementById('activity').value;
+      await fetch('/activities', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, activity })
+      });
+      document.getElementById('name').value = '';
+      document.getElementById('activity').value = '';
+      loadActivities();
+    }
+
+    loadActivities();
+  </script>
+</body>
+</html>

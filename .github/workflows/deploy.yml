@@ -1,0 +1,35 @@
+name: CI/CD Pipeline
+
+# เงื่อนไข: ทำงานอัตโนมัติทุกครั้งที่ push เข้ากิ่ง main หรือ staging
+on:
+  push:
+    branches:
+      - main
+      - staging
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. ดึงโค้ดจาก repository มาไว้บนเครื่อง runner
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. ติดตั้ง Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # 3. ติดตั้ง dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. ขั้นตอน Test
+      - name: Run tests
+        run: npm test
+
+      # 5. ขั้นตอน Build Docker image
+      - name: Build Docker image
+        run: docker build -t activity-log-app .

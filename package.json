@@ -1,0 +1,13 @@
+{
+  "name": "activity-log-app",
+  "version": "1.0.0",
+  "description": "ระบบบันทึกกิจกรรม - ตัวอย่างสำหรับข้อสอบ DevOps",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
